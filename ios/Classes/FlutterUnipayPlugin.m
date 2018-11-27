@@ -37,47 +37,39 @@
 - (void)startPayAction:(FlutterMethodCall *)call {
     NSString *tnStr = call.arguments[@"up_pay_tn"];
     NSString *tnModeStr = call.arguments[@"up_pay_mode"];
-    [[UPPaymentControl defaultControl] startPay:tnStr fromScheme:@"rph" mode:tnModeStr viewController:self.viewController];
+    [[UPPaymentControl defaultControl] startPay:tnStr fromScheme:@"renpinhui" mode:tnModeStr viewController:self.viewController];
 }
 
--(BOOL) verify:(NSString *) resultStr {
-    
-    //TODO: 此处的verify，商户需送去商户后台做验签
-    return YES;
-}
-
+// UIApplicationDelegate 
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     
     [[UPPaymentControl defaultControl] handlePaymentResult:url completeBlock:^(NSString *code, NSDictionary *data) {
-        
+        NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
         if([code isEqualToString:@"success"]) {
-            
-            //如果想对结果数据验签，可使用下面这段代码，但建议不验签，直接去商户后台查询交易结果
             if(data != nil){
-                //数据从NSDictionary转换为NSString
-                NSData *signData = [NSJSONSerialization dataWithJSONObject:data
-                                                                   options:0
-                                                                     error:nil];
-                NSString *sign = [[NSString alloc] initWithData:signData encoding:NSUTF8StringEncoding];
-                
-                //此处的verify建议送去商户后台做验签，如要放在手机端验，则代码必须支持更新证书
-                if([self verify:sign]) {
-                    //验签成功
-                }
-                else {
-                    //验签失败
-                }
+                [payload setValue:@"0000" forKey:@"code"];
+                [payload setValue:data[@"sign"] forKey:@"sign"];
+                [payload setValue:data[@"data"] forKey:@"data"];
+            } else {
+                //结果code为成功时，去商户后台查询一下确保交易是成功的再展示成功
+                [payload setValue:@"6666" forKey:@"code"];
             }
-            
-            //结果code为成功时，去商户后台查询一下确保交易是成功的再展示成功
         }
         else if([code isEqualToString:@"fail"]) {
             //交易失败
+            [payload setValue:@"9999" forKey:@"code"];
         }
         else if([code isEqualToString:@"cancel"]) {
             //交易取消
-            NSLog(@"Cancel");
+            [payload setValue:@"7777" forKey:@"code"];
         }
+        NSData *payloadData = [NSJSONSerialization dataWithJSONObject:payload
+                                                           options:0
+                                                             error:nil];
+        NSString *payloadMsg = [[NSString alloc] initWithData:payloadData encoding:NSUTF8StringEncoding];
+        [msgChannel sendMessage:payloadMsg reply:^(id  _Nullable reply) {
+            NSLog(@"%@", reply);
+        }];
     }];
     
     return YES;
@@ -88,34 +80,33 @@
 {
     [[UPPaymentControl defaultControl] handlePaymentResult:url completeBlock:^(NSString *code, NSDictionary *data) {
         
+        NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
         if([code isEqualToString:@"success"]) {
-            
             //如果想对结果数据验签，可使用下面这段代码，但建议不验签，直接去商户后台查询交易结果
             if(data != nil){
-                //数据从NSDictionary转换为NSString
-                NSData *signData = [NSJSONSerialization dataWithJSONObject:data
-                                                                   options:0
-                                                                     error:nil];
-                NSString *sign = [[NSString alloc] initWithData:signData encoding:NSUTF8StringEncoding];
-                
-                //此处的verify建议送去商户后台做验签，如要放在手机端验，则代码必须支持更新证书
-                if([self verify:sign]) {
-                    //验签成功
-                }
-                else {
-                    //验签失败
-                }
+                [payload setValue:@"0000" forKey:@"code"];
+                [payload setValue:data[@"sign"] forKey:@"sign"];
+                [payload setValue:data[@"data"] forKey:@"data"];
+            } else {
+                //结果code为成功时，去商户后台查询一下确保交易是成功的再展示成功
+                [payload setValue:@"6666" forKey:@"code"];
             }
-            
-            //结果code为成功时，去商户后台查询一下确保交易是成功的再展示成功
         }
         else if([code isEqualToString:@"fail"]) {
             //交易失败
+            [payload setValue:@"9999" forKey:@"code"];
         }
         else if([code isEqualToString:@"cancel"]) {
             //交易取消
-            NSLog(@"Cancel");
+            [payload setValue:@"7777" forKey:@"code"];
         }
+        NSData *payloadData = [NSJSONSerialization dataWithJSONObject:payload
+                                                              options:0
+                                                                error:nil];
+        NSString *payloadMsg = [[NSString alloc] initWithData:payloadData encoding:NSUTF8StringEncoding];
+        [msgChannel sendMessage:payloadMsg reply:^(id  _Nullable reply) {
+            NSLog(@"%@", reply);
+        }];
     }];
     
     return YES;
