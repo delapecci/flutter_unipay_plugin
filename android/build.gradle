@@ -1,0 +1,54 @@
+group 'com.nbp.flutterunipayplugin'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.2'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '28.0.1'
+
+    defaultConfig {
+        minSdkVersion 16
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs 'src/main/jniLibs'
+            assets.srcDirs 'src/main/assets'
+        }
+
+    }
+}
+
+dependencies {
+    compileOnly files('libs/flutter.jar')
+    api files('libs/UPPayAssistEx.jar')
+    api files('libs/UPPayPluginExPro.jar')
+}
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
