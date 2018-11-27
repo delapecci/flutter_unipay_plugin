@@ -17,5 +17,8 @@ Unipay flutter plugin
   s.dependency 'Flutter'
 
   s.ios.deployment_target = '8.0'
+  s.ios.frameworks = 'CFNetwork', 'SystemConfiguration'
+  s.libraries = 'z'
+  s.ios.vendored_libraries = 'Classes/libPaymentControl.a'
 end
 

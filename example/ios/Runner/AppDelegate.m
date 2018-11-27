@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
+#import "UPPaymentControl.h"
 
 @implementation AppDelegate
 
@@ -9,5 +10,4 @@
   // Override point for customization after application launch.
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
-
 @end
