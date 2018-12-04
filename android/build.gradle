@@ -37,14 +37,26 @@ android {
             jniLibs.srcDirs 'src/main/jniLibs'
             assets.srcDirs 'src/main/assets'
         }
-
     }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
 }
 
 dependencies {
     compileOnly files('libs/flutter.jar')
     api files('libs/UPPayAssistEx.jar')
     api files('libs/UPPayPluginExPro.jar')
+    compileOnly files('libs/org.simalliance.openmobileapi.jar')
 }
 allprojects {
     repositories {
