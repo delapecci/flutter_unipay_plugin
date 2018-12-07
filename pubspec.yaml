@@ -1,8 +1,9 @@
 name: flutter_unipay_plugin
-description: Unipay flutter plugin
+description: Simple Flutter plugin for intigration with China Unipay Mobile Pay SDK
 version: 0.0.1
-author:
-homepage:
+author: Li Chong <delapecci@google.com>
+homepage: https://github.com/delapecci/flutter_unipay_plugin
+documentation: https://github.com/delapecci/flutter_unipay_plugin/doc/api/index.html
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -10,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dio: 1.0.9
+  dio: ^1.0.9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
