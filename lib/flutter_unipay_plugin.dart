@@ -20,6 +20,10 @@ class FlutterUnipayPlugin {
   static const String UP_PAY_RESULT_K_SIGN = 'sign';
   static const String UP_PAY_RESULT_K_ERROR = 'error';
 
+//  mMode参数解释： "00" - 启动银联正式环境 "01" - 连接银联测试环境
+  static const String UP_PAY_MODE_TEST = "01";
+  static const String UP_PAY_MODE_PROD = "00";
+
   static const MethodChannel _channel =
       const MethodChannel(METHOD_CHANNEL_NAME);
 
